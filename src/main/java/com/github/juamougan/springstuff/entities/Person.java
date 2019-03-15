@@ -25,7 +25,7 @@ public class Person {
   @Max(200)             // What about Mirtha? :D
   private Integer age;
 
-  @Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", message = "Invalid email")
+  @Pattern(regexp = "[_a-zA-Z1-9]+(\\.[A-Za-z0-9]*)*@[A-Za-z0-9]+\\.[A-Za-z0-9]+(\\.[A-Za-z0-9]*)*", message = "Invalid email")
   private String email;
 
 }
