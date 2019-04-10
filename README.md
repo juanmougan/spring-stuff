@@ -31,7 +31,30 @@ would return
 
 ```
 
-Sources
+#### Usage
+
+##### Valid POST
+
+    curl --header "Content-Type: application/json"   --request POST   --data '{"name":"Juan","age":33,"email":"juan@somemail.com"}'   http://localhost:8080/people | jq .
+
+##### Missing name
+
+    curl --header "Content-Type: application/json"   --request POST   --data '{"age":33,"email":"juan@somemail.com"}'   http://localhost:8080/people | jq .
+
+##### Missing age
+
+    curl --header "Content-Type: application/json"   --request POST   --data '{"name":"Juan","email":"juan@somemail.com"}'   http://localhost:8080/people | jq .
+
+##### Missing name and age
+
+    curl --header "Content-Type: application/json"   --request POST   --data '{"email":"juan@somemail.com"}'   http://localhost:8080/people | jq .
+
+##### Invalid email
+
+    curl --header "Content-Type: application/json"   --request POST   --data '{"name":"Juan","age":33,"email":"juan@invalidmail"}'   http://localhost:8080/people | jq .
+
+
+#### Sources
 
 - https://spring.io/guides/gs/validating-form-input/
 
