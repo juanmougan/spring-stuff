@@ -1,5 +1,6 @@
 package com.github.juamougan.springstuff.entities;
 
+import com.github.juamougan.springstuff.validation.PersonExistingConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class Person {
 
   @NotBlank(message = "Name is mandatory")
   @Size(min = 2, max = 30)
+  @PersonExistingConstraint
   private String name;
 
   @NotNull(message = "Age is mandatory")

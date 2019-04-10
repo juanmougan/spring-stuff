@@ -65,6 +65,10 @@ would return
 
     curl --header "Content-Type: application/json"   --request PUT   --data '{"cuil":"99316592110"}'   http://localhost:8080/people/1/cuil | jq .
 
+##### Autowiring a bean - existing person example
+
+    curl --header "Content-Type: application/json"   --request POST   --data '{"name":"Rigoberto","age":93,"email":"rigoberto@somemail.com"}'   http://localhost:8080/people | jq .
+
 #### Sources
 
 - https://spring.io/guides/gs/validating-form-input/

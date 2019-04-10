@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cuil {
-    @CuilConstraint
+    @CuilConstraint             // Here I'm validating at an attribute level - only for this field
     private String cuil;
 }
