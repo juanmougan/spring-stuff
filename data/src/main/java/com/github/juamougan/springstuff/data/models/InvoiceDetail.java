@@ -25,7 +25,7 @@ public class InvoiceDetail {
   @Column(name = "QUANTITY")
   private final int quantity;
 
-  @Column(name = "PRODUCT")
+  @ManyToOne(fetch = FetchType.LAZY)
   private final Product product;
 
   @ManyToOne(fetch = FetchType.LAZY)
