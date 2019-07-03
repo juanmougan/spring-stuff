@@ -65,7 +65,10 @@ public class DataApplication {
 
   private void printStuff() {
     System.out.println("Printing all stuff");
+    System.out.println("Products: ");
     productRepository.findAll().forEach(System.out::println);
+    System.out.println("Invoices: ");
+    invoiceRepository.findAll().forEach(System.out::println);
   }
 
   // Autowire in the setter, because it's static

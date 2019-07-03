@@ -31,7 +31,7 @@ public class Invoice {
   @Column(name = "CREATED_AT")
   private LocalDateTime createdAt;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice")
   private Set<InvoiceDetail> details;
 
 }
