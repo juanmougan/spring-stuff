@@ -10,11 +10,17 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "INVOICE")
-@Value
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Invoice {
 
   @Id
@@ -23,9 +29,9 @@ public class Invoice {
   private Long id;
 
   @Column(name = "CREATED_AT")
-  private final LocalDateTime createdAt;
+  private LocalDateTime createdAt;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
-  private final Set<InvoiceDetail> details;
+  private Set<InvoiceDetail> details;
 
 }

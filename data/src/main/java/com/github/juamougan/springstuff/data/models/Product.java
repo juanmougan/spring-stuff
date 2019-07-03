@@ -7,11 +7,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "PRODUCT")
-@Value
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
   @Id
@@ -19,8 +25,8 @@ public class Product {
   @Column(name = "ID")
   private Long id;
 
-  private final String name;
+  private String name;
 
-  private final BigDecimal price;
+  private BigDecimal price;
 
 }

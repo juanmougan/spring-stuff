@@ -10,11 +10,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "INVOICE_DETAIL")
-@Value
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class InvoiceDetail {
 
   @Id
@@ -23,13 +29,13 @@ public class InvoiceDetail {
   private Long id;
 
   @Column(name = "QUANTITY")
-  private final int quantity;
+  private int quantity;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  private final Product product;
+  private Product product;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "PRODUCT")
-  private final Invoice invoice;
+  private Invoice invoice;
 
 }
