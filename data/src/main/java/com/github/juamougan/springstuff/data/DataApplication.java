@@ -9,7 +9,6 @@ import com.github.juamougan.springstuff.data.models.InvoiceDetail;
 import com.github.juamougan.springstuff.data.models.Product;
 import com.github.juamougan.springstuff.data.repositories.InvoiceRepository;
 import com.github.juamougan.springstuff.data.repositories.ProductRepository;
-import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,8 +32,7 @@ public class DataApplication {
   private void insertStuff() {
     insertProducts();
     Invoice i = insertInvoice();
-    Set<InvoiceDetail> invoiceDetails = insertInvoiceDetails();
-    updateInvoiceWithDetails(i, invoiceDetails);
+    insertInvoiceDetails(i);
   }
 
   private void updateInvoiceWithDetails(final Invoice i, final Set<InvoiceDetail> invoiceDetails) {
@@ -42,13 +40,15 @@ public class DataApplication {
     invoiceRepository.save(i);
   }
 
-  private Set<InvoiceDetail> insertInvoiceDetails() {
+  private void insertInvoiceDetails(Invoice i) {
     Product bicycle = productRepository.findByName(BICYCLE);
     Product car = productRepository.findByName(CAR);
-    Invoice i = invoiceRepository.findById(1L).orElse(null);    // TODO this doesn't look good. Maybe receive Invoice as parameter, instead of fetching from DB
+    //    Invoice i = invoiceRepository.findById(1L).orElse(null);    // TODO this doesn't look good. Maybe receive Invoice as parameter, instead of fetching from DB
     InvoiceDetail bicycleInvoiceDetail = InvoiceDetail.builder().invoice(i).product(bicycle).build();
     InvoiceDetail carInvoiceDetail = InvoiceDetail.builder().invoice(i).product(car).build();
-    return Sets.newHashSet(bicycleInvoiceDetail, carInvoiceDetail);
+    i.addInvoiceDetail(bicycleInvoiceDetail);
+    i.addInvoiceDetail(carInvoiceDetail);
+    invoiceRepository.save(i);
   }
 
   private void insertProducts() {

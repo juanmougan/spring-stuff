@@ -32,10 +32,11 @@ public class InvoiceDetail {
   private int quantity;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "PRODUCT_ID")
   private Product product;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "PRODUCT")
+  @JoinColumn(name = "INVOICE_ID")
   private Invoice invoice;
 
 }
