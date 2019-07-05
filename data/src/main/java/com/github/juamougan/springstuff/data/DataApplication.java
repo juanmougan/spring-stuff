@@ -2,6 +2,7 @@ package com.github.juamougan.springstuff.data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import com.github.juamougan.springstuff.data.models.Invoice;
@@ -9,9 +10,11 @@ import com.github.juamougan.springstuff.data.models.InvoiceDetail;
 import com.github.juamougan.springstuff.data.models.Product;
 import com.github.juamougan.springstuff.data.repositories.InvoiceRepository;
 import com.github.juamougan.springstuff.data.repositories.ProductRepository;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
 public class DataApplication {
@@ -29,10 +32,14 @@ public class DataApplication {
     application.printStuff();
   }
 
+  @Transactional
   private void insertStuff() {
     insertProducts();
-    Invoice i = insertInvoice();
-    insertInvoiceDetails(i);
+    Invoice i = Invoice.builder().createdAt(LocalDateTime.now()).build();
+    final List<InvoiceDetail> invoiceDetails = createInvoiceDetails(i);
+    i.addInvoiceDetail(invoiceDetails.get(0));
+    i.addInvoiceDetail(invoiceDetails.get(1));
+    invoiceRepository.save(i);
   }
 
   private void updateInvoiceWithDetails(final Invoice i, final Set<InvoiceDetail> invoiceDetails) {
@@ -40,15 +47,12 @@ public class DataApplication {
     invoiceRepository.save(i);
   }
 
-  private void insertInvoiceDetails(Invoice i) {
+  private List<InvoiceDetail> createInvoiceDetails(Invoice i) {
     Product bicycle = productRepository.findByName(BICYCLE);
     Product car = productRepository.findByName(CAR);
-    //    Invoice i = invoiceRepository.findById(1L).orElse(null);    // TODO this doesn't look good. Maybe receive Invoice as parameter, instead of fetching from DB
     InvoiceDetail bicycleInvoiceDetail = InvoiceDetail.builder().invoice(i).product(bicycle).build();
     InvoiceDetail carInvoiceDetail = InvoiceDetail.builder().invoice(i).product(car).build();
-    i.addInvoiceDetail(bicycleInvoiceDetail);
-    i.addInvoiceDetail(carInvoiceDetail);
-    invoiceRepository.save(i);
+    return Lists.newArrayList(bicycleInvoiceDetail, carInvoiceDetail);
   }
 
   private void insertProducts() {

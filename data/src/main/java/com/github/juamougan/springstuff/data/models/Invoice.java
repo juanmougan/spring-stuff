@@ -34,7 +34,7 @@ public class Invoice {
   @Column(name = "CREATED_AT")
   private LocalDateTime createdAt;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "invoice", orphanRemoval = true)
+  @OneToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH}, fetch = FetchType.LAZY, mappedBy = "invoice", orphanRemoval = true)
   @EqualsAndHashCode.Exclude
   private Set<InvoiceDetail> details;
 
