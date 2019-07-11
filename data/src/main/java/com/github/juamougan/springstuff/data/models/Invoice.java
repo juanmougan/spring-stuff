@@ -36,17 +36,16 @@ public class Invoice {
 
   @OneToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH}, fetch = FetchType.LAZY, mappedBy = "invoice", orphanRemoval = true)
   @EqualsAndHashCode.Exclude
-  private Set<InvoiceDetail> details;
+  private Set<InvoiceDetail> details = new HashSet<>();
 
   public void addInvoiceDetail(InvoiceDetail detail) {
-    if (details == null) details = new HashSet<>();
-    details.add(detail);
+    getDetails().add(detail);
     detail.setInvoice(this);
   }
 
   public void removeInvoiceDetail(InvoiceDetail detail) {
     detail.setInvoice(null);
-    details.remove(detail);
+    getDetails().remove(detail);
   }
 
 }
