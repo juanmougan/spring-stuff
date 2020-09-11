@@ -1,5 +1,6 @@
 package com.github.juanmougan.springstuff.pages;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class FancyObjectService implements InitializingBean {
@@ -19,6 +22,33 @@ public class FancyObjectService implements InitializingBean {
 
   public List<FancyObject> listAll() {
     return fancyObjects;
+  }
+
+  public List<FancyObject> filterBy(final FancyObjectFilterRequest filterRequest) {
+    return fancyObjects.stream()
+        .filter(o -> nameMatches(filterRequest).test(o.getName()))
+        .filter(o -> dateAfter(filterRequest).test(o.getCreatedAt()))
+        .collect(Collectors.toList());
+  }
+
+  private Predicate<String> nameMatches(final FancyObjectFilterRequest filterRequest) {
+    return n -> {
+      if (!Strings.isNullOrEmpty(filterRequest.getNameEqualTo())) {
+        return filterRequest.getNameEqualTo().equals(n);
+      } else {
+        return true;
+      }
+    };
+  }
+
+  private Predicate<LocalDateTime> dateAfter(final FancyObjectFilterRequest filterRequest) {
+    return ldt -> {
+      if (filterRequest.getCreatedAfter() != null) {
+        return filterRequest.getCreatedAfter().isBefore(ldt);
+      } else {
+        return true;
+      }
+    };
   }
 
   @Override

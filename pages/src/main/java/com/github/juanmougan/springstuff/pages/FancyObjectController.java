@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,7 +17,6 @@ public class FancyObjectController {
   @Autowired
   private FancyObjectService service;
 
-  // TODO I also need a POST to filter, with an FancyObjectFilterRequest (also paginated)
   /*
   E.g. http://localhost:8080/fancyobjects?page=1&size=2
   would return "Isabel", "Sara" (the 3rd and 4th elements)
@@ -35,9 +35,8 @@ public class FancyObjectController {
   }
 
   @PostMapping("/fancyobjects:filter")
-  public Page<FancyObject> filter(final Pageable pageable, final FancyObjectFilterRequest filterRequest) {
-    // TODO filter here, instead of passing the whole list
-    final List<FancyObject> all = service.listAll();
+  public Page<FancyObject> filter(final Pageable pageable, @RequestBody final FancyObjectFilterRequest filterRequest) {
+    final List<FancyObject> all = service.filterBy(filterRequest);
     return paginateList(pageable, all);
   }
 }
