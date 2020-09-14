@@ -3,7 +3,9 @@ package com.github.juanmougan.springstuff.pages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +26,7 @@ public class FancyObjectController {
   @GetMapping("/fancyobjects")
   public Page<FancyObject> list(final Pageable pageable) {
     final List<FancyObject> all = service.listAll();
-    return paginateList(pageable, all);
+    return paginateList(ignoreCase(pageable), all);
   }
 
   private Page<FancyObject> paginateList(final Pageable pageable, final List<FancyObject> fancyObjects) {
@@ -37,6 +39,14 @@ public class FancyObjectController {
   @PostMapping("/fancyobjects:filter")
   public Page<FancyObject> filter(final Pageable pageable, @RequestBody final FancyObjectFilterRequest filterRequest) {
     final List<FancyObject> all = service.filterBy(filterRequest);
-    return paginateList(pageable, all);
+    return paginateList(ignoreCase(pageable), all);
+  }
+
+  private Pageable ignoreCase(final Pageable pageable) {
+    final List<Sort.Order> orders = pageable.getSort()
+        .map(Sort.Order::ignoreCase)
+        .toList();
+    // FIXME sort is not working
+    return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(orders));
   }
 }
